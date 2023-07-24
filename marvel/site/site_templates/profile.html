@@ -1,0 +1,67 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+
+{% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+        {% for cat, msg in messages %}
+            {% if cat == 'auth-success' %}
+                <div class="container">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" onclick="this.parentElement.style.display='none'">&times;</button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+
+
+
+
+
+
+
+<header class="hero-section">
+    <h3 class="header-text">Welcome to the Avengers Headquarters, {{ current_user.email }}!</h3>
+    <main class="container marvel_form">
+        <div class="row">
+            <aside class="col-12 col-md-6">
+                <h2>Add Your Favorite Characters!</h2>
+                {% include 'marvelform.html' %}
+            </aside>
+        </div>
+    </main>
+
+</header>
+
+<div class="container">
+    <h3>Here are your profile details</h3>
+    <ul class="list-group">
+        <li class="list-group-item">Email: {{ current_user.email }}</li>
+        <li class="list-group-item">Token: {{ current_user.token }}</li>
+    </ul>
+    <div class="row">
+        {% for marvel in marvels %}
+        <div class="card" style="width: 18rem;">
+            <img src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" class="card-img-top" alt="marvel">
+            <div class="card-body">
+              <h5 class="card-title">{{ marvel.name }}</h5>
+              <p class="card-text">{{ marvel.description }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{ marvel.comics_appeared_in }}</li>
+              <li class="list-group-item">{{ marvel.super_power }}</li>
+            </ul>
+            <div class="card-body">
+              <a href="#" class="card-link">Update Character</a>
+              <a href="#" class="card-link">Delete Character</a>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
