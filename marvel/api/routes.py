@@ -2,9 +2,6 @@ from flask import Blueprint, request, jsonify
 from marvel.helpers import token_required
 from marvel.models import db, Marvel, marvel_schema, marvels_schema
 
-
-
-
 api = Blueprint('api', __name__, url_prefix = '/api')
 
 @api.route('/getdata')
@@ -29,7 +26,6 @@ def create_marvel(our_user):
 
     db.session.add(marvel)
     db.session.commit()
-
     response = marvel_schema.dump(marvel)
 
     return jsonify(response)
@@ -52,7 +48,6 @@ def get_marvels(our_user):
     token=our_user.token
     marvels = Marvel.query.filter_by(user_token = token).all()
     response = marvels_schema.dump(marvels)
-
     return jsonify(response)
 
 
@@ -75,15 +70,12 @@ def update_marvel(our_user, id):
 
     return jsonify(response)
 
-
 @api.route('/marvels/<id>', methods = ['DELETE'])
 @token_required
 def delete_marvel(our_user, id):
     marvel = Marvel.query.get(id)
     db.session.delete(marvel)
     db.session.commit()
-
     response = marvel_schema.dump(marvel)
-
     return jsonify(response)
 
